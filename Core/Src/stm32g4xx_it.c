@@ -239,7 +239,6 @@ void EXTI15_10_IRQHandler(void)
   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_13) != RESET)
   {
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_13);
-//    DEBUG_PRINT_LN("there");
     /* USER CODE BEGIN LL_EXTI_LINE_13 */
     if ( B1_GPIO_Port->IDR & B1_Pin ){
 //    	DEBUG_PRINT_LN("here");

@@ -95,10 +95,23 @@ int main(void)
   MX_FDCAN2_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  DEBUG_PRINT_LN("## FDCAN 1:");
+  DEBUG_PRINT_LN("  pre %ld, nomts1 %ld, nomts2 %ld", hfdcan1.Init.NominalPrescaler, hfdcan1.Init.NominalTimeSeg1, hfdcan1.Init.NominalTimeSeg2);
+  DEBUG_PRINT_LN("	msgram sdt filt address: %lx",  hfdcan1.msgRam.StandardFilterSA);
+  DEBUG_PRINT_LN("	msgram ext filt address: %lx",  hfdcan1.msgRam.ExtendedFilterSA);
+  DEBUG_PRINT_LN("	msgram fifo 0 address: %lx",    hfdcan1.msgRam.RxFIFO0SA);
+  DEBUG_PRINT_LN("	msgram fifo 1 address: %lx",    hfdcan1.msgRam.RxFIFO1SA);
+
+  DEBUG_PRINT_LN("\n## FDCAN 2:");
+  DEBUG_PRINT_LN("  pre %ld, nomts1 %ld, nomts2 %ld", hfdcan2.Init.NominalPrescaler, hfdcan2.Init.NominalTimeSeg1, hfdcan2.Init.NominalTimeSeg2);
+  DEBUG_PRINT_LN("	msgram sdt filt address: %lx",  hfdcan2.msgRam.StandardFilterSA);
+  DEBUG_PRINT_LN("	msgram ext filt address: %lx",  hfdcan2.msgRam.ExtendedFilterSA);
+  DEBUG_PRINT_LN("	msgram fifo 0 address: %lx",    hfdcan2.msgRam.RxFIFO0SA);
+  DEBUG_PRINT_LN("	msgram fifo 1 address: %lx",    hfdcan2.msgRam.RxFIFO1SA);
 
   /* Configure reception filter to Rx FIFO 0 on both FDCAN instances */
   sFilterConfig.IdType = FDCAN_STANDARD_ID;
-  sFilterConfig.FilterIndex = 0;
+  sFilterConfig.FilterIndex = 1;
   sFilterConfig.FilterType = FDCAN_FILTER_MASK;
   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   sFilterConfig.FilterID1 = 0x111;
@@ -112,6 +125,9 @@ int main(void)
   {
     Error_Handler();
   }
+
+  canPrintFilterConfig(hfdcan1.msgRam.StandardFilterSA);
+  canPrintFilterConfig(hfdcan2.msgRam.StandardFilterSA);
 
   /* Configure global filter on both FDCAN instances:
      Filter all remote frames with STD and EXT ID

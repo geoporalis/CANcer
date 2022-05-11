@@ -50,7 +50,7 @@ void MX_FDCAN2_Init(void);
 void canConfigurateNStart(FDCAN_HandleTypeDef *hfdcan, uint32_t baud, uint32_t sync_pzt, uint32_t sampl_pzt);
 void canConfigFiltersDefault(FDCAN_HandleTypeDef *hfdcan);
 void canConfigBaudRate(FDCAN_HandleTypeDef *hfdcan);
-
+void canPrintFilterConfig(uint32_t address);
 
 
 /* USER CODE END Prototypes */

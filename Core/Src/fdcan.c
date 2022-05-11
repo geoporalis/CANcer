@@ -52,15 +52,15 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 1;
+  hfdcan1.Init.NominalPrescaler = 3;
   hfdcan1.Init.NominalSyncJumpWidth = 8;
-  hfdcan1.Init.NominalTimeSeg1 = 111;
-  hfdcan1.Init.NominalTimeSeg2 = 58;
+  hfdcan1.Init.NominalTimeSeg1 = 35;
+  hfdcan1.Init.NominalTimeSeg2 = 20;
   hfdcan1.Init.DataPrescaler = 1;
   hfdcan1.Init.DataSyncJumpWidth = 1;
   hfdcan1.Init.DataTimeSeg1 = 1;
   hfdcan1.Init.DataTimeSeg2 = 1;
-  hfdcan1.Init.StdFiltersNbr = 5;
+  hfdcan1.Init.StdFiltersNbr = 1;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
   if (HAL_FDCAN_Init(&hfdcan1) != HAL_OK)
@@ -90,15 +90,15 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.AutoRetransmission = DISABLE;
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
-  hfdcan2.Init.NominalPrescaler = 1;
+  hfdcan2.Init.NominalPrescaler = 3;
   hfdcan2.Init.NominalSyncJumpWidth = 8;
-  hfdcan2.Init.NominalTimeSeg1 = 111;
-  hfdcan2.Init.NominalTimeSeg2 = 58;
+  hfdcan2.Init.NominalTimeSeg1 = 35;
+  hfdcan2.Init.NominalTimeSeg2 = 20;
   hfdcan2.Init.DataPrescaler = 1;
   hfdcan2.Init.DataSyncJumpWidth = 1;
   hfdcan2.Init.DataTimeSeg1 = 1;
   hfdcan2.Init.DataTimeSeg2 = 1;
-  hfdcan2.Init.StdFiltersNbr = 5;
+  hfdcan2.Init.StdFiltersNbr = 1;
   hfdcan2.Init.ExtFiltersNbr = 0;
   hfdcan2.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
   if (HAL_FDCAN_Init(&hfdcan2) != HAL_OK)
@@ -327,9 +327,6 @@ void canConfigBaudRate(FDCAN_HandleTypeDef *hfdcan){
 	hfdcan->Init.NominalTimeSeg1 = timeseg_1;
 	hfdcan->Init.NominalTimeSeg2 = timeseg_2;
 
-
-	DEBUG_PRINT_LN("pre %ld, nomts1 %ld, nomts2 %ld", sync_bit, timeseg_1, timeseg_2);
-
 //	if(can_started != 0 ){
 //		canStop(hfdcan);
 //	}
@@ -433,7 +430,25 @@ void canTransmit(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *tx_data, uin
 }
 
 
+void canPrintFilterConfig(uint32_t address){
 
+	  uint32_t *FilterAddress = (uint32_t*)address;
+	  DEBUG_PRINT_LN("Std: Address: %lx, value: %lx : SFT: %lx SFEC: %lx SFID1: %lx SFID1: %lx", (uint32_t)FilterAddress, *(uint32_t*)FilterAddress
+			  	  ,  (*(uint32_t*)FilterAddress)>>30
+				  , ((*(uint32_t*)FilterAddress)>>27) & 0x7
+				  , ((*(uint32_t*)FilterAddress)>>16) & 0x7FF
+				  , ((*(uint32_t*)FilterAddress)>> 0) & 0x7FF
+				  );
+
+	  FilterAddress++;
+	  DEBUG_PRINT_LN("Std: Address: %lx, value: %lx : SFT: %lx SFEC: %lx SFID1: %lx SFID1: %lx", (uint32_t)FilterAddress, *(uint32_t*)FilterAddress
+				  ,  (*(uint32_t*)FilterAddress)>>30
+				  , ((*(uint32_t*)FilterAddress)>>27) & 0x7
+				  , ((*(uint32_t*)FilterAddress)>>16) & 0x7FF
+				  , ((*(uint32_t*)FilterAddress)>> 0) & 0x7FF
+				  );
+
+}
 
 
 
